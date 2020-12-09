@@ -5,10 +5,7 @@ class Phrase {
     }
 
     /**
-     * Adds letter placeholders to the display when game starts
-     * @param {number} x The number to raise.
-     * @param {number} n The power, must be a natural number.
-     * @return {number} x raised to the n-th power.
+     * Cycle through characters and display them hidden on the screen
      */
     addPhraseToDisplay() { 
         const characters = this.phrase.split('');
@@ -25,32 +22,38 @@ class Phrase {
     }
 
     /**
-     * Adds letter placeholders to the display when game starts
-     * @param {number} x The number to raise.
-     * @param {number} n The power, must be a natural number.
-     * @return {number} x raised to the n-th power.
+     * Check if a character matches a letter in the phrase
+     * @param   {String}    character The letter that was clicked
+     * @return  {Boolean}   Returns whether match is true or false
      */
     checkLetter(character) {
         const letterObjects = this.phraseDisplay.querySelectorAll('li');
+        let match = false;
         letterObjects.forEach(letterObject => {
-            const letter = letterObject.getAttribute('class').split('').pop();
-            if (letter === character) {
-                this.showMatchedLetter(letterObject);
+            if (letterObject.className !== 'space') {
+                const letter = letterObject.getAttribute('class').split('').pop();
+                if (letter === character) {
+                    match = true;
+                }
             }
         });
+        return match;
     }
 
     /**
-     * Adds letter placeholders to the display when game starts
-     * @param {number} x The number to raise.
-     * @param {number} n The power, must be a natural number.
-     * @return {number} x raised to the n-th power.
+     * Show the matching letter
+     * @param   {String}    character The letter that was checked
      */
-    showMatchedLetter(letter) {
-        letter.classList.remove('hide');
-        letter.classList.add('show');
+    showMatchedLetter(character) {
+        const letterObjects = this.phraseDisplay.querySelectorAll('li');
+        letterObjects.forEach(letterObject => {
+            if (letterObject.className !== 'space') {
+                const letter = letterObject.getAttribute('class').split('').pop();
+                if (letter === character) {
+                    letterObject.classList.remove('hide');
+                    letterObject.classList.add('show');
+                }
+            }
+        });
     }
 }
-const display = new Phrase('test this phrase');
-display.addPhraseToDisplay();
-display.checkLetter('t');
