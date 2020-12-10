@@ -14,6 +14,7 @@ class Game {
                     'mortal kombat',
                     'animal crossing' ];
         this.activePhrase = null;
+        this.ready = false;
     }
 
     /**
@@ -25,6 +26,7 @@ class Game {
         this.activePhrase.addPhraseToDisplay();
         // Hide Screen Overlay
         document.querySelector('#overlay').style.display = 'none';
+        this.ready = true;
     }
 
     /**
@@ -41,20 +43,31 @@ class Game {
      * @param   {Object}    key The object of the key that was pressed
      */
     handleInteraction(key) {
+        if (typeof key === 'string') {
+            // If key is a string we need to find its key object
+            const keyboardObjects = document.querySelectorAll('.key');
+            keyboardObjects.forEach(object => {
+                if (object.textContent === key) {
+                    key = object;
+                }
+            });
+        }
         key.disabled = true;
-        const letter = key.textContent;
+        const letter = key.textContent.toLowerCase();
         // Check if letter is in the hidden phrase
-        const letterObject = this.activePhrase.checkLetter(letter);
-        if(letterObject) {
-            key.classList.add('chosen');
-            this.activePhrase.showMatchedLetter(letterObject);
-            // Check if player has won
-            if(this.checkForWin()) {
-                this.gameOver('win');
-            }
-        } else {
-            key.classList.add('wrong');
-            this.removeLife();
+        const letterObjects = this.activePhrase.checkLetter(letter);
+        if(!key.classList.contains('chosen') && !key.classList.contains('wrong')) {
+            if(letterObjects.length) {
+                key.classList.add('chosen');
+                this.activePhrase.showMatchedLetter(letterObjects);
+                // Check if player has won
+                if(this.checkForWin()) {
+                    this.gameOver('win');
+                }
+            } else {
+                key.classList.add('wrong');
+                this.removeLife();
+        }
         }
     }
     /**
@@ -105,6 +118,7 @@ class Game {
         }
         // Show screen overlay
         overlay.style.display = '';
+        this.ready = false;
     }
 
     /**
