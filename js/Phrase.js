@@ -28,12 +28,12 @@ class Phrase {
      */
     checkLetter(character) {
         const letterObjects = this.phraseDisplay.querySelectorAll('li');
-        let match = false;
+        let match;
         letterObjects.forEach(letterObject => {
             if (letterObject.className !== 'space') {
                 const letter = letterObject.getAttribute('class').split('').pop();
                 if (letter === character) {
-                    match = true;
+                    match = letterObject;
                 }
             }
         });
@@ -42,18 +42,10 @@ class Phrase {
 
     /**
      * Show the matching letter
-     * @param   {String}    character The letter that was checked
+     * @param   {Object}    letterObject The letter object that was picked
      */
-    showMatchedLetter(character) {
-        const letterObjects = this.phraseDisplay.querySelectorAll('li');
-        letterObjects.forEach(letterObject => {
-            if (letterObject.className !== 'space') {
-                const letter = letterObject.getAttribute('class').split('').pop();
-                if (letter === character) {
-                    letterObject.classList.remove('hide');
-                    letterObject.classList.add('show');
-                }
-            }
-        });
+    showMatchedLetter(letterObject) {
+        letterObject.classList.remove('hide');
+        letterObject.classList.add('show');
     }
 }

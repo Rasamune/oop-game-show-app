@@ -44,9 +44,10 @@ class Game {
         key.disabled = true;
         const letter = key.textContent;
         // Check if letter is in the hidden phrase
-        if(this.activePhrase.checkLetter(letter)) {
+        const letterObject = this.activePhrase.checkLetter(letter);
+        if(letterObject) {
             key.classList.add('chosen');
-            this.activePhrase.showMatchedLetter(letter);
+            this.activePhrase.showMatchedLetter(letterObject);
             // Check if player has won
             if(this.checkForWin()) {
                 this.gameOver('win');
@@ -56,7 +57,6 @@ class Game {
             this.removeLife();
         }
     }
-
     /**
      * Change heart image with every missed letter, check for losing condition
      */
