@@ -1,11 +1,18 @@
 class Game {
     constructor() {
         this.missed = 0;
-        this.phrases = [ 'breath of fire',
+        this.phrases = [ 'demon souls',
                     'zelda',
                     'mario party',
                     'final fantasy',
-                    'illusion of gaia' ];
+                    'resident evil',
+                    'god of war',
+                    'pokemon',
+                    'the witcher',
+                    'halo',
+                    'fire emblem',
+                    'mortal kombat',
+                    'animal crossing' ];
         this.activePhrase = null;
     }
 
@@ -13,6 +20,7 @@ class Game {
      * Start Game, get a random phrase and hide the overlay
      */
     startGame() {
+        this.reset();
         this.activePhrase = this.getRandomPhrase();
         this.activePhrase.addPhraseToDisplay();
         // Hide Screen Overlay
@@ -30,21 +38,21 @@ class Game {
 
     /**
      * Handle when player clicks on the letter keys
-     * @param   {Object}    letterObject The object of the key that was pressed
+     * @param   {Object}    key The object of the key that was pressed
      */
-    handleInteraction(letterObject) {
-        letterObject.disabled = true;
-        const letter = letterObject.textContent;
+    handleInteraction(key) {
+        key.disabled = true;
+        const letter = key.textContent;
         // Check if letter is in the hidden phrase
         if(this.activePhrase.checkLetter(letter)) {
-            letterObject.classList.add('chosen');
+            key.classList.add('chosen');
             this.activePhrase.showMatchedLetter(letter);
             // Check if player has won
             if(this.checkForWin()) {
                 this.gameOver('win');
             }
         } else {
-            letterObject.classList.add('wrong');
+            key.classList.add('wrong');
             this.removeLife();
         }
     }
@@ -84,15 +92,41 @@ class Game {
     gameOver(result) {
         let overlay = document.querySelector('#overlay');
         let overlayText = overlay.querySelector('h1');
+        const resetButton = document.querySelector('#btn__reset');
 
         if (result === 'win') {
             overlay.className = 'win';
-            overlayText.textContent = 'Yay, you win!';
+            overlayText.textContent = `You win! The title was ${this.activePhrase.phrase.toUpperCase()}!`;
+            resetButton.textContent = "Play Again";
         } else {
             overlay.className = 'lose';
-            overlayText.textContent = 'Sorry, you lose!';
+            overlayText.textContent = `Sorry, the title was ${this.activePhrase.phrase.toUpperCase()}!`;
+            resetButton.textContent = "Try Again";
         }
         // Show screen overlay
         overlay.style.display = '';
+    }
+
+    /**
+     * Reset values on Start Game
+     */
+    reset() {
+        const keyboard = document.querySelectorAll('#qwerty button');
+        const hearts = document.querySelectorAll('#scoreboard ol li img');
+        this.missed = 0;
+        // Clear Active Phrase
+        if (this.activePhrase) {
+            this.activePhrase.phraseDisplay.innerHTML = '';
+
+        }
+        // Reset keys to default
+        keyboard.forEach(key => {
+            key.className = 'key';
+            key.disabled = false;
+        });
+        // Reset hearts to default
+        hearts.forEach(heart => {
+            heart.setAttribute('src', 'images/liveHeart.png');
+        });
     }
 }

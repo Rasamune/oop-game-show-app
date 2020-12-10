@@ -40,10 +40,15 @@ h2 {
   text-transform: uppercase;
   font-size: var(--font-size-large);
   margin: 0;
+  font-family: 'Oswald', sans-serif;
 }
 
 h1 {
   font-size: 30px;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  padding: 15px;
+  background-color: #fff;
 }
 
 button {
@@ -62,7 +67,7 @@ button {
 
 #btn__reset {
 	width: 200px;
-	margin: 0 auto;
+	margin: 15px auto;
 }
 
 .main-container {
@@ -161,6 +166,10 @@ button {
   border-right: solid 3px rgba(0, 0, 0, 0);
 }
 
+#btn__reset:hover {
+  background-color: #ffedba;
+}
+
 
 /* Overlay */
 
@@ -203,4 +212,16 @@ button {
 
 .lose a {
   color: var(--color-lose);
+}
+
+.lose > #game-over-message {
+  color: #f5785f;
+}
+
+.win > #game-over-message {
+  color: #78CF82;
+}
+
+.start > #game-over-message {
+  color: #445069;
 }

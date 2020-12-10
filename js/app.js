@@ -19,3 +19,10 @@ document.querySelector('#qwerty').addEventListener('click', e => {
         game.handleInteraction(e.target);
     }
 });
+
+/**
+ * Handle keyboard key presses
+ */
+document.addEventListener('keydown', e => {
+    game.handleInteraction(e.key);
+});
