@@ -1,18 +1,23 @@
 class Game {
     constructor() {
         this.missed = 0;
-        this.phrases = [ 'demon souls',
-                    'zelda',
-                    'mario party',
-                    'final fantasy',
-                    'resident evil',
-                    'god of war',
-                    'pokemon',
-                    'the witcher',
-                    'halo',
-                    'fire emblem',
-                    'mortal kombat',
-                    'animal crossing' ];
+        this.phrases = [ 
+            new Phrase('kingdom hearts'),
+            new Phrase('zelda'),
+            new Phrase('mario party'),
+            new Phrase('final fantasy'),
+            new Phrase('resident evil'),
+            new Phrase('god of war'),
+            new Phrase('pokemon'),
+            new Phrase('the witcher'),
+            new Phrase('halo'),
+            new Phrase('fire emblem'),
+            new Phrase('mortal kombat'),
+            new Phrase('animal crossing'),
+            new Phrase('super metroid'),
+            new Phrase('grand theft auto'),
+            new Phrase('gears of war')
+        ];
         this.activePhrase = null;
         this.ready = false;
     }
@@ -35,16 +40,16 @@ class Game {
      */
     getRandomPhrase() {
         const random = Math.floor(Math.random() * this.phrases.length);
-        return new Phrase(this.phrases[random]);
+        return this.phrases[random];
     }
 
     /**
      * Handle when player clicks on the letter keys
-     * @param   {Object}    key The object of the key that was pressed
+     * @param   {Object/String}    key The object or string of the key that was pressed
      */
     handleInteraction(key) {
+        // If key is a string we need to find its key object
         if (typeof key === 'string') {
-            // If key is a string we need to find its key object
             const keyboardObjects = document.querySelectorAll('.key');
             keyboardObjects.forEach(object => {
                 if (object.textContent === key) {
@@ -52,22 +57,31 @@ class Game {
                 }
             });
         }
-        key.disabled = true;
-        const letter = key.textContent.toLowerCase();
-        // Check if letter is in the hidden phrase
-        const letterObjects = this.activePhrase.checkLetter(letter);
-        if(!key.classList.contains('chosen') && !key.classList.contains('wrong')) {
-            if(letterObjects.length) {
-                key.classList.add('chosen');
-                this.activePhrase.showMatchedLetter(letterObjects);
-                // Check if player has won
-                if(this.checkForWin()) {
-                    this.gameOver('win');
+        // If key object wasn't found, do nothing
+        // (This is in case a key is pressed that isn't on the keyboard)
+        if (typeof key === 'object') {
+            const letter = key.textContent;
+            // Check if letter is in the hidden phrase, return matched letter as objects
+            const letterObjects = this.activePhrase.checkLetter(letter);
+            // Disable key so it can't be clicked
+            key.disabled = true;
+
+            // If key hasn't already been selected
+            if(!key.classList.contains('chosen') && !key.classList.contains('wrong')) {
+                // If letterObjects contains letters
+                if(letterObjects.length) {
+                    key.classList.add('chosen');
+                    this.activePhrase.showMatchedLetter(letterObjects);
+                    // Check if player has won
+                    if(this.checkForWin()) {
+                        this.gameOver('win');
+                    }
+                // letterObjects is empty, so the letter was no found
+                } else {
+                    key.classList.add('wrong');
+                    this.removeLife();
                 }
-            } else {
-                key.classList.add('wrong');
-                this.removeLife();
-        }
+            }
         }
     }
     /**
@@ -77,7 +91,7 @@ class Game {
         const hearts = document.querySelectorAll('#scoreboard ol li img');
         this.missed += 1;
         hearts[5 - this.missed].setAttribute('src', 'images/lostHeart.png');
-        // If letter is missed 5 times, the game is over
+        // If letter is missed 5 times, the game is over, the player loses
         if (this.missed === 5) {
             this.gameOver('lose');
         }
@@ -139,8 +153,6 @@ class Game {
             key.disabled = false;
         });
         // Reset hearts to default
-        hearts.forEach(heart => {
-            heart.setAttribute('src', 'images/liveHeart.png');
-        });
+        hearts.forEach(heart => heart.setAttribute('src', 'images/liveHeart.png'));
     }
 }

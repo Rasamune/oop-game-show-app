@@ -24,7 +24,7 @@ class Phrase {
     /**
      * Check if a character matches a letter in the phrase
      * @param   {String}    character The letter that was clicked
-     * @return  {Boolean}   Returns whether match is true or false
+     * @return  {Array}     Returns the array of letter objects that were matched
      */
     checkLetter(character) {
         const letterObjects = this.phraseDisplay.querySelectorAll('li');
@@ -42,7 +42,7 @@ class Phrase {
 
     /**
      * Show the matching letter
-     * @param   {Object}    letterObjects The letter objects that matched
+     * @param   {Array}    letterObjects The array of letter objects to reveal
      */
     showMatchedLetter(letterObjects) {
         letterObjects.forEach(letterObject => {
