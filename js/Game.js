@@ -50,6 +50,10 @@ class Game {
     handleInteraction(key) {
         // If key is a string we need to find its key object
         if (typeof key === 'string') {
+            // If Enter key is pressed and game is not ready
+            if (key === 'Enter' && !this.ready) {
+                this.startGame();
+            }
             const keyboardObjects = document.querySelectorAll('.key');
             keyboardObjects.forEach(object => {
                 if (object.textContent === key) {

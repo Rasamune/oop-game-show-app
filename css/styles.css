@@ -28,6 +28,7 @@ body {
   flex-direction: column;
   display: flex;
   height: 100vh;
+  margin: 0;
 }
 
 li, ol, ul {
@@ -188,6 +189,11 @@ button {
 
 .title {
   color: #FFF;
+}
+
+.button-subtitle {
+  margin-top: 0;
+  font-style: italic;
 }
 
 .start {
