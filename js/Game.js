@@ -55,6 +55,8 @@ class Game {
                 this.startGame();
             }
             const keyboardObjects = document.querySelectorAll('.key');
+            // Set key to lowercase in case Caps Lock is on
+            key = key.toLowerCase();
             keyboardObjects.forEach(object => {
                 if (object.textContent === key) {
                     key = object;
@@ -62,10 +64,10 @@ class Game {
             });
         }
         // If key object wasn't found, do nothing
-        // (This is in case a key is pressed that isn't on the keyboard)
+        // (This is in case a key is pressed that isn't on the onscreen keyboard)
         if (typeof key === 'object') {
             const letter = key.textContent;
-            // Check if letter is in the hidden phrase, return matched letter as objects
+            // Check if letter is in the hidden phrase, return matched letters as objects
             const letterObjects = this.activePhrase.checkLetter(letter);
             // Disable key so it can't be clicked
             key.disabled = true;
