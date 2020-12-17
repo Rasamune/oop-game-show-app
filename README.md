@@ -12,5 +12,4 @@
  - Changed font of new title, "TITLE HUNTER", to Oswald
  - Added white bar to highlight winning/losing conditions
  - Start Game Button updates to "Play Again" upon winning, and "Try Again" upon losing
- - Added "Press Enter" subtitle on overlay
  - Fixed margin so page no longer displayed the scroll bar
