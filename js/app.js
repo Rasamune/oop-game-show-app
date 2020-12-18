@@ -1,8 +1,9 @@
+const game = new Game();
+
 /**
  * Start Game when clicking Start Button
  */
 document.querySelector('#btn__reset').addEventListener('click', e => {
-    const game = new Game();
     game.startGame();
 });
 
